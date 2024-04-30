@@ -37,3 +37,51 @@ class MyCustomElement extends HTMLElement {
 }
 // Register the custom element with the browser
 customElements.define("my-custom-element", MyCustomElement);
+
+// /* Element Selector */
+// p {
+//     color: blue;
+//   }
+
+//   /* Class Selector */
+//   .container {
+//     width: 100%;
+//   }
+
+//   /* ID Selector */
+//   #header {
+//     background-color: gray;
+//   }
+
+//   /* Descendant Selector */
+//   .container p {
+//     font-size: 16px;
+//   }
+
+//   /* Child Selector */
+//   .container > p {
+//     margin: 10px;
+//   }
+
+//   /* Adjacent Sibling Selector */
+//   h2 + p {
+//     font-weight: bold;
+//   }
+
+//   /* Attribute Selector */
+//   input[type="text"] {
+//     border: 1px solid black;
+//   }
+
+//   /* Pseudo-classes and Pseudo-elements */
+//   a:hover {
+//     color: red;
+//   }
+
+//   li:nth-child(odd) {
+//     background-color: lightgray;
+//   }
+
+//   p::first-line {
+//     font-weight: bold;
+//   }
