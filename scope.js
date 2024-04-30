@@ -1,6 +1,6 @@
 {
   let a = 10;
-  console.log("Let has Functional Scope", a);
+  console.log("Let has Functional or block Scope", a);
 }
 {
   var b = 20;
