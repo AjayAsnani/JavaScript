@@ -1,4 +1,4 @@
-// Pure functions always return same output for ame input.
+// Pure functions always return same output for same input.
 console.log("Pure Functions");
 function test(input) {
   return `Testing ${input}`;
