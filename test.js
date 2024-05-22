@@ -81,3 +81,170 @@ function reverseString(str) {
 
 const string3 = "Hello, World!";
 console.log(reverseString(string3));
+
+// Anagram
+const isAnagram = function (s, t) {
+  s = s.split("").sort().join("");
+  t = t.split("").sort().join("");
+
+  return s == t;
+};
+console.log(isAnagram("hello", "olleh"));
+
+//Smartfoodsafe
+const electionResults = {
+  BJP: {
+    UP: 3,
+    Rajasthan: 1,
+    AndhraPradesh: 1,
+    TamilNadu: 0,
+    Kerala: 0,
+    Delhi: 1,
+    Karnataka: 1,
+  },
+  CONGRESS: {
+    UP: 7,
+    Rajasthan: 9,
+    AndhraPradesh: 9,
+    TamilNadu: 10,
+    Kerala: 5,
+    Delhi: 3,
+    Karnataka: 8,
+  },
+  AAP: {
+    UP: 0,
+    Rajasthan: 0,
+    AndhraPradesh: 0,
+    TamilNadu: 0,
+    Kerala: 4,
+    Delhi: 3,
+    Karnataka: 1,
+  },
+};
+
+const totalSeats = {
+  UP: 10,
+  Rajasthan: 10,
+  AndhraPradesh: 10,
+  TamilNadu: 10,
+  Kerala: 10,
+  Delhi: 10,
+  Karnataka: 10,
+};
+
+const votingPercentages = {
+  UP: 100,
+  Rajasthan: 100,
+  AndhraPradesh: 100,
+  TamilNadu: 100,
+  Kerala: 100,
+  Delhi: 100,
+  Karnataka: 100,
+};
+
+// 1. Calculate total seats won by each party
+const totalSeatsWon = { BJP: 0, CONGRESS: 0, AAP: 0 };
+
+for (const state in totalSeats) {
+  totalSeatsWon.BJP += electionResults.BJP[state];
+  totalSeatsWon.CONGRESS += electionResults.CONGRESS[state];
+  totalSeatsWon.AAP += electionResults.AAP[state];
+}
+
+const grandTotalSeats = Object.values(totalSeats).reduce((a, b) => a + b, 0);
+
+// 2. Determine if any party has 60% or more seats
+const majorityThreshold = 0.6 * grandTotalSeats;
+let rulingParty = null;
+
+for (const party in totalSeatsWon) {
+  if (totalSeatsWon[party] >= majorityThreshold) {
+    rulingParty = party;
+    break;
+  }
+}
+
+// 3. If no party has majority, find a two-party coalition
+let coalition = null;
+if (!rulingParty) {
+  const partyNames = Object.keys(totalSeatsWon);
+  for (let i = 0; i < partyNames.length; i++) {
+    for (let j = i + 1; j < partyNames.length; j++) {
+      if (
+        totalSeatsWon[partyNames[i]] + totalSeatsWon[partyNames[j]] >=
+        majorityThreshold
+      ) {
+        coalition = [partyNames[i], partyNames[j]];
+        break;
+      }
+    }
+    if (coalition) break;
+  }
+}
+
+// 4. Find undecided seats
+const undecidedSeats = {};
+for (const state in totalSeats) {
+  const decidedSeats =
+    electionResults.BJP[state] +
+    electionResults.CONGRESS[state] +
+    electionResults.AAP[state];
+  if (decidedSeats < totalSeats[state]) {
+    undecidedSeats[state] = totalSeats[state] - decidedSeats;
+  }
+}
+
+// 5. Find states with max and min voting percentages
+const states = Object.keys(votingPercentages);
+let maxVotingState = states[0];
+let minVotingState = states[0];
+
+for (const state of states) {
+  if (votingPercentages[state] > votingPercentages[maxVotingState]) {
+    maxVotingState = state;
+  }
+  if (votingPercentages[state] < votingPercentages[minVotingState]) {
+    minVotingState = state;
+  }
+}
+
+// Output the results
+console.log("Total seats won by each party:", totalSeatsWon);
+if (rulingParty) {
+  console.log("Ruling party for the next 5 years:", rulingParty);
+} else {
+  console.log("No single party has the majority.");
+  if (coalition) {
+    console.log(
+      "Possible coalition to form the government:",
+      coalition.join(" and ")
+    );
+  } else {
+    console.log("No possible coalition can achieve the majority.");
+  }
+}
+console.log("Undecided seats in each state:", undecidedSeats);
+console.log("State with maximum voting percentage:", maxVotingState);
+console.log("State with minimum voting percentage:", minVotingState);
+
+/*elections are going on in the country let's look at the final voting results as:-
+{ BJP { UP:3, rajasthan:1, Andhra Pradesh:1,TamilNadu:0,Kerala:0,Delhi:1,Karnataka:1}
+ CONGRESS { UP:7, rajasthan:9, Andhra Pradesh:9,TamilNadu:10,Kerala:5,Delhi:3,Karnataka:8}
+ AAP { UP:0, rajasthan:0, Andhra Pradesh:0TamilNadu:0,Kerala:4,Delhi:3,Karnataka:1}
+
+Below is data on total seats available and voting percent
+UP:{seats 10, voting percentage: "100"},
+Rajasthan:{seats 10, voting percentage: "100"},
+Andhra Pradesh:{seats 10, voting percentage: "100"},
+TamilNadu:{seats 10, voting percentage: "100"},
+Kerala:{seats 10, voting percentage: "100"},
+Delhi:{seats 10, voting percentage: "100"},
+Karnataka:{seats 10, voting percentage: "100"},
+
+1) You have to find out which political party is going to rule for the next 5 years. The government should get at least 60% votes to win.
+
+2)If any party is not getting the majority(60%) of seats then predict which two parties of the government can combine making 60%.
+
+3)Find out which seats are left undecided for eg in Delhi and Kerala above, not all 10 seats are decided.
+
+4)Find out the state with maximum and minimum voting percentages.*/
